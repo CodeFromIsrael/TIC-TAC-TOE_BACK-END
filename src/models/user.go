@@ -3,6 +3,7 @@ package models
 import (
 	"errors"
 	"strings"
+	"tic_tac_toe_BACK-END/src/segurity"
 
 	"github.com/badoux/checkmail"
 )
@@ -12,12 +13,12 @@ type User struct {
 	Name     string `json:"nome,omitempty"`
 	Phone    string `json:"telefone,omitempty"`
 	Email    string `json:"email,omitempty"`
-	Password string `json:"senhas,omitempty"`
+	Password string `json:"senha,omitempty"`
 	Onlline  bool   `json:"onlline,omitempty"`
 }
 
-func (user *User) Prepare() error {
-	if err := user.trimFields(); err != nil {
+func (user *User) Prepare(step string) error {
+	if err := user.trimFields(step); err != nil {
 		return err
 	}
 	if err := user.validate(); err != nil {
@@ -26,9 +27,16 @@ func (user *User) Prepare() error {
 	return nil
 }
 
-func (user *User) trimFields() error {
+func (user *User) trimFields(step string) error {
 	user.Name = strings.TrimSpace(user.Name)
 	user.Email = strings.TrimSpace(user.Email)
+	if step == "cadastro" {
+		passHash, erro := segurity.Hash(user.Password)
+		if erro != nil {
+			return erro
+		}
+		user.Password = string(passHash)
+	}
 	return nil
 }
 

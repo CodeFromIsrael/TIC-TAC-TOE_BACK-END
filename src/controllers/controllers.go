@@ -21,7 +21,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		response.Erro(w, http.StatusBadRequest, erro)
 		return
 	}
-	if erro = user.Prepare(); erro != nil {
+	if erro = user.Prepare("cadastro"); erro != nil {
 		response.Erro(w, http.StatusBadRequest, erro)
 		return
 	}
@@ -39,4 +39,8 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	response.Json(w, http.StatusCreated, user)
+}
+
+func Login(w http.ResponseWriter, r *http.Request) {
+
 }
