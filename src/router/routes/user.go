@@ -15,7 +15,7 @@ var routesUser = []Route{
 	{
 		Url:                   "/login",
 		method:                http.MethodPost,
-		function:              func(w http.ResponseWriter, r *http.Request) {},
+		function:              controllers.Login,
 		requireAuthentication: false,
 	},
 	{

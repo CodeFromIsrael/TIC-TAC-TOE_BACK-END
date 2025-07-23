@@ -13,6 +13,8 @@ var (
 	StringConectionDB = ""
 
 	Door = 0
+
+	SecretKey []byte
 )
 
 func Toload() {
@@ -26,5 +28,7 @@ func Toload() {
 		Door = 9000
 	}
 	StringConectionDB = fmt.Sprintf("%s:%s@/%s", os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_BANK"))
+
+	SecretKey = []byte(os.Getenv("SECRET_KEY"))
 
 }

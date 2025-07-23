@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"errors"
 	"tic_tac_toe_BACK-END/src/models"
 )
 
@@ -31,4 +32,22 @@ func (user *User) Create(u models.User) (uint64, error) {
 	}
 
 	return uint64(lastId), erro
+}
+
+func (User *User) SearchByEmail(email string) (models.User, error) {
+	lines, erro := User.db.Query("select id,senha from usuarios where email = ?", email)
+	if erro != nil {
+		return models.User{}, erro
+	}
+	defer lines.Close()
+
+	var user models.User
+
+	if lines.Next() {
+		if erro = lines.Scan(&user.Id, &user.Password); erro != nil {
+			return models.User{}, erro
+		}
+		return user, nil
+	}
+	return user, errors.New("usuário não encontrado ")
 }
